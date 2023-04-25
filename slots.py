@@ -3,6 +3,7 @@ import random
 from threading import Thread
 
 def main():
+    """Function main() is used to print random slot from list of slots."""
     output = []
     slots = (
         "🌮",
@@ -15,8 +16,7 @@ def main():
             output.append(random.choice(slots))
 
         print(" | ".join(output))
-        output = []
-    
+        output = []  
 
 threads = []
 
