@@ -5,7 +5,7 @@ Crappy pong clone made with pygame
 import pygame
 from pygame.locals import *
 from sys import exit
-from colors import Colors
+from .colors import Colors
 
 colors = Colors()
 
@@ -24,6 +24,7 @@ class Screen:
         return pygame.display.set_caption("pogger")
     
 screen = Screen()
+display = screen.screen()
 screen.screen()
 screen.caption()
 
@@ -37,7 +38,7 @@ class Paddle1:
         self.score = 0
     
     def draw(self):
-        return pygame.draw.rect(screen.screen(), (255, 255, 255), (self.x, self.y, self.width, self.height))
+        return pygame.draw.rect(display, (255, 255, 255), (self.x, self.y, self.width, self.height))
     
     def move(self):
         key = pygame.key.get_pressed()
@@ -58,7 +59,7 @@ class Paddle2:
         self.y = (screen.y / 2) + (self.height / 2)
     
     def draw(self):
-        return pygame.draw.rect(screen.screen(), (255, 255, 255), (self.x, self.y, self.width, self.height))
+        return pygame.draw.rect(display, (255, 255, 255), (self.x, self.y, self.width, self.height))
     
     def move(self):
         key = pygame.key.get_pressed()
@@ -75,7 +76,7 @@ while True:
             pygame.quit()
             exit()
     
-    screen.screen().fill(colors.light_grey)
+    display.fill(colors.lighten(colors.cyan, 75))
 
     paddle1.draw()
     paddle1.move()
