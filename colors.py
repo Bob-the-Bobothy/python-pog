@@ -19,10 +19,10 @@ class Colors:
         self.brown = (165, 42, 42)
         self.grey = (128, 128, 128)
 
-    def random(self):
+    def random(self, min=0, max=255):
         output = []
         for i in range(3):
-            output.append(randint(0, 255))
+            output.append(randint(min, max))
 
         return tuple(output)
     
