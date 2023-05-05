@@ -33,7 +33,7 @@ class Paddles:
     def __init__(self):
         self.width = 10
         self.height = 70
-        self.speed = 7.5
+        self.speed = 6
         self.score = 0
         self.spacing = 40
         self.center = (screen.y / 2) - (self.height / 2)
@@ -49,6 +49,7 @@ class Paddle1(Paddles):
         self.x = paddles.spacing
         self.y = paddles.center
         self.rect = paddles.rect(self.x, self.y)
+        self.speed = 0
     
     def draw(self):
         self.rect = paddles.rect(self.x, self.y)
@@ -59,8 +60,11 @@ class Paddle1(Paddles):
         key = pygame.key.get_pressed()
         if key[K_w] and self.y > 0:
             self.y -= paddles.speed
+            self.speed =- paddles.speed
+            
         elif key[K_s] and self.y < (screen.y - paddles.height):
             self.y += paddles.speed
+            self.speed = paddles.speed
 
 paddle1 = Paddle1()
 
@@ -69,6 +73,7 @@ class Paddle2(Paddles):
         self.x = screen.x - (paddles.spacing + paddles.width)
         self.y = paddles.center
         self.rect = paddles.rect(self.x, self.y)
+        self.speed = 0
     
     def draw(self):
         self.rect = paddles.rect(self.x, self.y)
@@ -79,8 +84,11 @@ class Paddle2(Paddles):
         key = pygame.key.get_pressed()
         if key[K_UP] and self.y > 0:
             self.y -= paddles.speed
+            self.speed =- paddles.speed
+            
         elif key[K_DOWN] and self.y < (screen.y - paddles.height):
             self.y += paddles.speed
+            self.speed = paddles.speed
 
 paddle2 = Paddle2()
 
@@ -91,7 +99,7 @@ class Ball:
         self.radius = 10
         self.speed = {
             "x": random.choice([-5, 5]),
-            "y": 0,
+            "y": random.randint(-1, 1),
         }
         
     def draw(self):
@@ -102,8 +110,16 @@ class Ball:
             
     def move(self):
         if pygame.Rect.colliderect(self.rect(), paddle1.rect) or pygame.Rect.colliderect(self.rect(), paddle2.rect):
-           self.speed["x"] =- self.speed["x"]
-           self.speed["y"] =- self.speed["y"]
+            self.speed["x"] =- self.speed["x"]
+            
+        if pygame.Rect.colliderect(self.rect(), paddle1.rect):
+            self.speed["y"] = paddle1.speed / 3
+            
+        if pygame.Rect.colliderect(self.rect(), paddle2.rect):
+            self.speed["y"] = paddle2.speed / 3
+           
+        if self.y - self.radius < 0 or self.y + self.radius > screen.y:
+            self.speed["y"] =- self.speed["y"]
            
         self.x += self.speed["x"]
         self.y += self.speed["y"]
@@ -135,8 +151,8 @@ while running:
     paddle2.draw()
     paddle2.move()
     
-    ball.draw()
     ball.move()
+    ball.draw()
 
     pygame.display.update()
     
