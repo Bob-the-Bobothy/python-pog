@@ -1,5 +1,5 @@
 """
-Crappy pong clone made with pygame
+Goofy pong clone made with pygame
 """
 
 import pygame
@@ -116,7 +116,7 @@ class Ball:
             self.speed["y"] = paddle1.speed / 3
             
         if pygame.Rect.colliderect(self.rect(), paddle2.rect):
-            self.speed["y"] = paddle2.speed / 3
+            self.speed["y"] = paddle2.speed / 3 + random.randint
            
         if self.y - self.radius < 0 or self.y + self.radius > screen.y:
             self.speed["y"] =- self.speed["y"]
