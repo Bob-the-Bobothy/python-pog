@@ -1,19 +1,36 @@
-"""Module random.choice is used to pick random option from list of slots."""
 import random
 
-def main():
-    """Function main() is used to print random slot from list of slots."""
+def main(rows=int, columns=int):
     output = []
     slots = (
         "🌮",
-        "🫓",
+        "🌮",
+        "🌮",
+        "🌮",
+        "🫓 ",
+        "🫓 ",
+        "🫓 ",
+        "🍕",
         "🍕",
         "🦒",
+        "🦒",
         "🍔",
-        "7",
+        "🍒",
+        "🌞",
     )
 
-    for i in range(5):
-        output.append(random.choice(slots))
+    for i in range(3):
+        for i in range(5):
+            choice = str(random.choice(slots))
+            if choice == "🍒":
+                if random.randint(1, 3) == 1:
+                    output.append("🍒")
+                else:
+                    output.append("🌞")
+            else:
+                output.append(choice)
 
-    print(output)
+        print(" ".join(output))
+        output.clear()
+
+main()
