@@ -44,7 +44,7 @@ class Paddles:
         
 paddles = Paddles()
 
-class Paddle1(Paddles):
+class PaddleL(Paddles):
     def __init__(self):
         self.x = paddles.spacing
         self.y = paddles.center
@@ -66,9 +66,9 @@ class Paddle1(Paddles):
             self.y += paddles.speed
             self.speed = paddles.speed
 
-paddle1 = Paddle1()
+paddleL = PaddleL()
 
-class Paddle2(Paddles):
+class PaddleR(Paddles):
     def __init__(self):
         self.x = screen.x - (paddles.spacing + paddles.width)
         self.y = paddles.center
@@ -81,16 +81,15 @@ class Paddle2(Paddles):
     
     def move(self):
         self.rect = paddles.rect(self.x, self.y)
-        key = pygame.key.get_pressed()
-        if key[K_UP] and self.y > 0:
+        if ball.y < self.y + (paddles.height / 2) and self.y > 0:
             self.y -= paddles.speed
             self.speed =- paddles.speed
-            
-        elif key[K_DOWN] and self.y < (screen.y - paddles.height):
+        
+        if ball.y > self.y + (paddles.height / 2) and self.y < (screen.y - paddles.height):
             self.y += paddles.speed
             self.speed = paddles.speed
 
-paddle2 = Paddle2()
+paddleR = PaddleR()
 
 class Ball:
     def __init__(self):
@@ -101,6 +100,7 @@ class Ball:
             "x": random.choice([-5, 5]),
             "y": random.randint(-1, 1),
         }
+        self.speed_increase = .25
         
     def draw(self):
         return pygame.draw.circle(display, colors.darken(colors.green, 50), (self.x, self.y), self.radius)
@@ -109,14 +109,19 @@ class Ball:
         return pygame.Rect(self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
             
     def move(self):
-        if pygame.Rect.colliderect(self.rect(), paddle1.rect) or pygame.Rect.colliderect(self.rect(), paddle2.rect):
+        if pygame.Rect.colliderect(self.rect(), paddleL.rect) or pygame.Rect.colliderect(self.rect(), paddleR.rect):
             self.speed["x"] =- self.speed["x"]
+            if self.speed["x"] > 0:
+                self.speed["x"] += self.speed_increase
+                
+            else:
+                self.speed["x"] -= self.speed_increase
             
-        if pygame.Rect.colliderect(self.rect(), paddle1.rect):
-            self.speed["y"] = paddle1.speed / 3
+        if pygame.Rect.colliderect(self.rect(), paddleL.rect):
+            self.speed["y"] = paddleL.speed / 3 + random.randint(-1, 1)
             
-        if pygame.Rect.colliderect(self.rect(), paddle2.rect):
-            self.speed["y"] = paddle2.speed / 3 + random.randint
+        if pygame.Rect.colliderect(self.rect(), paddleR.rect):
+            self.speed["y"] = paddleR.speed / 3 + random.randint(-1, 1)
            
         if self.y - self.radius < 0 or self.y + self.radius > screen.y:
             self.speed["y"] =- self.speed["y"]
@@ -146,10 +151,10 @@ while running:
     
     display.fill(colors.lighten(colors.cyan, 75))
 
-    paddle1.draw()
-    paddle1.move()
-    paddle2.draw()
-    paddle2.move()
+    paddleL.draw()
+    paddleL.move()
+    paddleR.draw()
+    paddleR.move()
     
     ball.move()
     ball.draw()
