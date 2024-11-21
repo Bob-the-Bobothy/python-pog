@@ -1,26 +1,36 @@
-"""Module random.choice is used to pick random option from list of slots."""
 import random
-from threading import Thread
 
-def main():
-    """Function main() is used to print random slot from list of slots."""
+def main(rows=int, columns=int):
     output = []
     slots = (
         "🌮",
+        "🌮",
+        "🌮",
+        "🌮",
+        "🫓 ",
+        "🫓 ",
         "🫓 ",
         "🍕",
+        "🍕",
+        "🦒",
+        "🦒",
+        "🍔",
+        "🍒",
+        "🌞",
     )
 
-    while True:
-        for out in range(3):
-            output.append(random.choice(slots))
+    for i in range(3):
+        for i in range(5):
+            choice = str(random.choice(slots))
+            if choice == "🍒":
+                if random.randint(1, 3) == 1:
+                    output.append("🍒")
+                else:
+                    output.append("🌞")
+            else:
+                output.append(choice)
 
-        print(" | ".join(output))
-        output = []  
+        print(" ".join(output))
+        output.clear()
 
-threads = []
-
-for i in range(1000):
-    x = Thread(target=main)
-    threads.append(x)
-    x.start()
+main()
